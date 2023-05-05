@@ -31,7 +31,8 @@ public class Globals
 
     public static BuildingData[] BUILDING_DATA = new BuildingData[]
     {
-        new BuildingData("Building", 100)
+        new BuildingData("House", 100),
+        new BuildingData("Tower", 50)
     };
 
     // ћы определили наш "абстрактный" класс данных.

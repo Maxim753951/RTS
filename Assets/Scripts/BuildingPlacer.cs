@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 /*
 public class BuildingPlacer : MonoBehaviour
@@ -41,12 +42,15 @@ public class BuildingPlacer : MonoBehaviour
     private Vector3 _lastPlacementPosition;
 
 
+    /* (we remove the Start() method)
     void Start()
     {
         // for now, we'll automatically pick our first
         // building type as the type we want to build
         _PreparePlacedBuilding(0);
     }
+    */
+
 
     void Update()
     {
@@ -77,13 +81,15 @@ public class BuildingPlacer : MonoBehaviour
                 _lastPlacementPosition = _raycastHit.point;
             }
 
-            if (_placedBuilding.HasValidPlacement && Input.GetMouseButtonDown(0))
-            {
-                // place building
-            }
 
+            // EventSystems пакет Unity, который заботится о взаимодействии с элементами пользовательского интерфейса.
+            // Мы просто проверим, что в данный момент у нас нет события для элемента пользовательского интерфейса, подобного этому
 
-            if (_placedBuilding.HasValidPlacement && Input.GetMouseButtonDown(0))
+            if (
+                _placedBuilding.HasValidPlacement &&
+                Input.GetMouseButtonDown(0) &&
+                !EventSystem.current.IsPointerOverGameObject()
+            )
             {
                 _PlaceBuilding();
             }
@@ -92,17 +98,17 @@ public class BuildingPlacer : MonoBehaviour
 
     void _PreparePlacedBuilding(int buildingDataIndex)
     {
-        /*
+        
         // -----------------------------------------------------------
         // destroy the previous "phantom" if there is one
         if (_placedBuilding != null && !_placedBuilding.IsFixed)
             Destroy(_placedBuilding.Transform.gameObject);
         // -----------------------------------------------------------
-        */
+        
 
-        // Нам нужно вызвать нашу Initialize() функцию при выборе типа здания, чтобы вновь созданный Building экземпляр мог связать свои данные со своим BuildingManager скриптом
-        // (который мы поместили в Префаб "Building", чтобы он автоматически присутствовал в каждом новом экземпляре Префаба здания)
-        Building building = new Building(
+    // Нам нужно вызвать нашу Initialize() функцию при выборе типа здания, чтобы вновь созданный Building экземпляр мог связать свои данные со своим BuildingManager скриптом
+    // (который мы поместили в Префаб "Building", чтобы он автоматически присутствовал в каждом новом экземпляре Префаба здания)
+    Building building = new Building(
             Globals.BUILDING_DATA[buildingDataIndex]
         );
         // link the data into the manager
@@ -125,5 +131,11 @@ public class BuildingPlacer : MonoBehaviour
         // destroy the "phantom" building
         Destroy(_placedBuilding.Transform.gameObject);
         _placedBuilding = null;
+    }
+
+
+    public void SelectPlacedBuilding(int buildingDataIndex)
+    {
+        _PreparePlacedBuilding(buildingDataIndex);
     }
 }
