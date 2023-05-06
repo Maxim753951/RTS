@@ -34,6 +34,9 @@ public class BuildingPlacer : MonoBehaviour
 
 public class BuildingPlacer : MonoBehaviour
 {
+    private UIManager _uiManager;
+
+
     private Building _placedBuilding = null;
 
 
@@ -50,6 +53,12 @@ public class BuildingPlacer : MonoBehaviour
         _PreparePlacedBuilding(0);
     }
     */
+
+
+    private void Awake()
+    {
+        _uiManager = GetComponent<UIManager>();
+    }
 
 
     void Update()
@@ -122,7 +131,14 @@ public class BuildingPlacer : MonoBehaviour
     {
         _placedBuilding.Place();
         // keep on building the same building type
-        _PreparePlacedBuilding(_placedBuilding.DataIndex);
+        if (_placedBuilding.CanBuy())
+            _PreparePlacedBuilding(_placedBuilding.DataIndex);
+        else
+            _placedBuilding = null;
+
+
+        _uiManager.UpdateResourceTexts();
+        _uiManager.CheckBuildingButtons();
     }
 
 
