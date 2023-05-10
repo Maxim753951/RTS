@@ -48,6 +48,7 @@ public class Building
     private BuildingManager _buildingManager;
 
 
+    /*
     public Building(BuildingData data)
     {
         _data = data;
@@ -69,6 +70,28 @@ public class Building
         
 
         _buildingManager = g.GetComponent<BuildingManager>();
+        _placement = BuildingPlacement.VALID;
+        SetMaterials();
+    }
+    */
+
+
+    public Building(BuildingData data)
+    {
+        _data = data;
+        _currentHealth = data.healthpoints;
+
+        GameObject g = GameObject.Instantiate(data.prefab) as GameObject;
+        _transform = g.transform;
+
+        _buildingManager = _transform.GetComponent<BuildingManager>();
+
+        _materials = new List<Material>();
+        foreach (Material material in _transform.Find("Mesh").GetComponent<Renderer>().materials)
+        {
+            _materials.Add(new Material(material));
+        }
+
         _placement = BuildingPlacement.VALID;
         SetMaterials();
     }
@@ -131,9 +154,18 @@ public class Building
 
         // update game resources: remove the cost of the building
         // from each game resource
+
+        /*
         foreach (KeyValuePair<string, int> pair in _data.Cost)
         {
             Globals.GAME_RESOURCES[pair.Key].AddAmount(-pair.Value);
+        }
+        */
+
+
+        foreach (ResourceValue resource in _data.cost)
+        {
+            Globals.GAME_RESOURCES[resource.code].AddAmount(-resource.amount);
         }
     }
 
@@ -154,10 +186,11 @@ public class Building
     }
 
 
-    public string Code { get => _data.Code; }
+    //public string Code { get => _data.Code; }
     public Transform Transform { get => _transform; }
     public int HP { get => _currentHealth; set => _currentHealth = value; }
-    public int MaxHP { get => _data.HP; }
+    //public int MaxHP { get => _data.HP; }
+    /*
     public int DataIndex
     {
         get
@@ -165,6 +198,25 @@ public class Building
             for (int i = 0; i < Globals.BUILDING_DATA.Length; i++)
             {
                 if (Globals.BUILDING_DATA[i].Code == _data.Code)
+                {
+                    return i;
+                }
+            }
+            return -1;
+        }
+    }
+    */
+
+
+    public string Code { get => _data.code; }
+    public int MaxHP { get => _data.healthpoints; }
+    public int DataIndex
+    {
+        get
+        {
+            for (int i = 0; i < Globals.BUILDING_DATA.Length; i++)
+            {
+                if (Globals.BUILDING_DATA[i].code == _data.code)
                 {
                     return i;
                 }

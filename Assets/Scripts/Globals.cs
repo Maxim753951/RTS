@@ -34,8 +34,10 @@ public class Globals
     // € имею в виду, что мы не будем напр€мую представл€ть эти данные на экране, а вместо этого передадим их в наши реальные экземпл€ры зданий
     // Ёти экземпл€ры обрабатываютс€ другим классом - Building
 
+    /*
     public static BuildingData[] BUILDING_DATA = new BuildingData[]
     {
+        
         new BuildingData("House", 100, new Dictionary<string, int>()
         {
             { "gold", 100 },
@@ -48,6 +50,9 @@ public class Globals
             { "stone", 100 }
         }),
     };
+    */
+
+    public static BuildingData[] BUILDING_DATA;
 
 
     // ƒл€ некоторых программистов глобальные / статические переменные не €вл€ютс€ хорошим шаблоном кодировани€.
