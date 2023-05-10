@@ -26,8 +26,10 @@ public class BuildingManager : MonoBehaviour
 // "doodads"/"поделки" - это все маленькие объекты, которые оживляют мир, вызывают столкновения и с которыми обычно нельзя взаимодействовать: деревья, камни, стены
 // Чтобы проверить это столкновение, мы будем использовать Box Collider, которые мы добавили в наши Prefabs
 
+// производный класс от UnitManager (выбор игровых объектов с наследованием от MonoBehaviour)
+
 [RequireComponent(typeof(BoxCollider))]
-public class BuildingManager : MonoBehaviour
+public class BuildingManager : UnitManager
 {
     private BoxCollider _collider;
 
@@ -105,5 +107,15 @@ public class BuildingManager : MonoBehaviour
                 invalidCornersCount++;
         }
         return invalidCornersCount < 3;
+    }
+
+
+    // UnitManager Первый определяет IsActive() защищенная функция для вычисления, считается ли юнит "живым" или нет, и устанавливает ее в true по умолчанию.
+
+    // Затем, BuildingManager переопределяет эту логику и вместо этого использует свою собственную Building состояние размещения экземпляра
+    // для проверки "жизнеспособности" этого конкретного подтипа юнита
+    protected override bool IsActive()
+    {
+        return _building.IsFixed;
     }
 }
