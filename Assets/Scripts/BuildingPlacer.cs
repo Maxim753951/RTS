@@ -34,7 +34,7 @@ public class BuildingPlacer : MonoBehaviour
 
 public class BuildingPlacer : MonoBehaviour
 {
-    private UIManager _uiManager;
+    //private UIManager _uiManager;
 
 
     private Building _placedBuilding = null;
@@ -54,11 +54,12 @@ public class BuildingPlacer : MonoBehaviour
     }
     */
 
-
+    /*
     private void Awake()
     {
         _uiManager = GetComponent<UIManager>();
     }
+    */
 
 
     void Update()
@@ -136,9 +137,17 @@ public class BuildingPlacer : MonoBehaviour
         else
             _placedBuilding = null;
 
-
+        /*
         _uiManager.UpdateResourceTexts();
         _uiManager.CheckBuildingButtons();
+        */
+
+
+        // Даже если оба этих скрипта (UIManager и BuildingPlacer) находятся на нашем объекте "GAME" и должны присутствовать вместе, лучше избегать такой жесткой запутанности.
+        // Вместо этого мы можем удалить эту _uiManager переменную и генерировать события
+
+        EventManager.TriggerEvent("UpdateResourceTexts");
+        EventManager.TriggerEvent("CheckBuildingButtons");
     }
 
 

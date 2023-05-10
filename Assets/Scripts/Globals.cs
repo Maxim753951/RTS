@@ -46,7 +46,7 @@ public class Globals
             { "gold", 80 },
             { "wood", 80 },
             { "stone", 100 }
-        })
+        }),
     };
 
 
@@ -59,8 +59,8 @@ public class Globals
     public static Dictionary<string, GameResource> GAME_RESOURCES =
         new Dictionary<string, GameResource>()
     {
-        { "gold", new GameResource("Gold", 100) },
-        { "wood", new GameResource("Wood", 100) },
-        { "stone", new GameResource("Stone", 100) }
+        { "gold", new GameResource("Gold", 300) },
+        { "wood", new GameResource("Wood", 300) },
+        { "stone", new GameResource("Stone", 300) }
     };
 }

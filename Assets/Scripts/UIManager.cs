@@ -45,6 +45,23 @@ public class UIManager : MonoBehaviour
     private Dictionary<string, Button> _buildingButtons;
 
 
+    // И затем мы просто добавляем соответствующие прослушиватели в UIManager класс -
+    // это хорошая возможность изменить связанные функции обратного вызова (associated callback functions) на частные методы (private methods),
+    // чтобы улучшить нашу инкапсуляцию данных, и добавить к этим обратным вызовам префикс "On" (это обычное соглашение при определении обратных вызовов событий)
+
+    private void OnEnable()
+    {
+        EventManager.AddListener("UpdateResourceTexts", _OnUpdateResourceTexts);
+        EventManager.AddListener("CheckBuildingButtons", _OnCheckBuildingButtons);
+    }
+
+    private void OnDisable()
+    {
+        EventManager.RemoveListener("UpdateResourceTexts", _OnUpdateResourceTexts);
+        EventManager.RemoveListener("CheckBuildingButtons", _OnCheckBuildingButtons);
+    }
+
+
     private void Awake()
     {
         // create texts for each in-game resource (gold, wood, stone...)
@@ -101,6 +118,7 @@ public class UIManager : MonoBehaviour
         _resourceTexts[resource].text = value.ToString();
     }
 
+    /*
     public void UpdateResourceTexts()
     {
         foreach (KeyValuePair<string, GameResource> pair in Globals.GAME_RESOURCES)
@@ -116,5 +134,19 @@ public class UIManager : MonoBehaviour
         {
             _buildingButtons[data.Code].interactable = data.CanBuy();
         }
+    }
+    */
+
+
+    private void _OnUpdateResourceTexts()
+    {
+        foreach (KeyValuePair<string, GameResource> pair in Globals.GAME_RESOURCES)
+            _SetResourceText(pair.Key, pair.Value.Amount);
+    }
+
+    private void _OnCheckBuildingButtons()
+    {
+        foreach (BuildingData data in Globals.BUILDING_DATA)
+            _buildingButtons[data.Code].interactable = data.CanBuy();
     }
 }
